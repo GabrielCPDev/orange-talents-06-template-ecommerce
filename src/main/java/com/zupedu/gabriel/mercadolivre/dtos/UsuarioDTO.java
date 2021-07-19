@@ -3,6 +3,7 @@ package com.zupedu.gabriel.mercadolivre.dtos;
 import java.io.Serializable;
 import java.time.Instant;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import com.zupedu.gabriel.mercadolivre.entities.Usuario;
@@ -13,6 +14,7 @@ public class UsuarioDTO implements Serializable {
 	private Long id;
 	@NotBlank(message = "Campo Obrigatório")
 	private String nome;
+	@Email(message = "Formato de email inválido")
 	@NotBlank(message = "Campo Obrigatório")
 	private String email;
 	private Instant dataCadastro;

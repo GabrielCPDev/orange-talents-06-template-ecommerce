@@ -3,11 +3,13 @@ package com.zupedu.gabriel.mercadolivre.entities;
 import java.io.Serializable;
 import java.time.Instant;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -20,6 +22,8 @@ public class Usuario implements Serializable{
 	private Long id;
 	@NotBlank(message = "Campo Obrigatório")
 	private String nome;
+	@Column(unique = true)
+	@Email(message = "Formato de email inválido")
 	@NotBlank(message = "Campo Obrigatório")
 	private String email;
 	@NotBlank(message = "Campo Obrigatório")

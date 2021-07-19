@@ -3,9 +3,12 @@ package com.zupedu.gabriel.mercadolivre.resources;
 import java.net.URI;
 import java.time.Instant;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,14 +31,14 @@ public class UsuarioResource {
 	private BCryptPasswordEncoder senhaEncoder;
 	
 	@PostMapping
-	public ResponseEntity<UsuarioDTO> save (@RequestBody UsuarioNewDTO dto){
+	public ResponseEntity<UsuarioDTO> save (@Valid @RequestBody UsuarioNewDTO dto) throws MethodArgumentNotValidException{
 		Usuario entity = toEntity(dto);
 		entity.setSenha(senhaEncoder.encode(dto.getSenha()));
 		entity.setDataCadastro(Instant.now());
 		entity = usuarioRepository.save(entity);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
-		return ResponseEntity.created(uri).body(dto);
+		return ResponseEntity.created(uri).build();
 		
 	}
 	
