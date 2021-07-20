@@ -9,4 +9,6 @@ import com.zupedu.gabriel.mercadolivre.entities.Usuario;
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
 
+	Categoria findByNome(String nome);
+
 }

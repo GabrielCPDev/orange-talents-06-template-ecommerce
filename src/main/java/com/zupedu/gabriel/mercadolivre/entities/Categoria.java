@@ -4,11 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tb_categorias")
@@ -18,8 +23,11 @@ public class Categoria implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank
+	@Column(unique = true)
 	private String nome;
-	private List<Categoria> CategoriasMae = new ArrayList<>();
+	@ManyToOne
+	private Categoria CategoriaMae;
 	
 	public Categoria() {
 		
@@ -29,6 +37,12 @@ public class Categoria implements Serializable {
 		super();
 		this.id = id;
 		this.nome = nome;
+	}
+	public Categoria(Long id, String nome, Categoria cat) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.CategoriaMae = cat;
 	}
 
 	public Long getId() {
@@ -47,12 +61,12 @@ public class Categoria implements Serializable {
 		this.nome = nome;
 	}
 
-	public List<Categoria> getCategoriasMae() {
-		return CategoriasMae;
+	public Categoria getCategoriaMae() {
+		return CategoriaMae;
 	}
 
-	public void setCategoriasMae(List<Categoria> categoriasMae) {
-		CategoriasMae = categoriasMae;
+	public void setCategoriaMae(Categoria categoriasMae) {
+		CategoriaMae = categoriasMae;
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package com.zupedu.gabriel.mercadolivre.resources.validations;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.validation.ConstraintValidator;
@@ -25,7 +24,7 @@ public class UsuarioInsertValidator implements ConstraintValidator<UsuarioInsert
 		List<FieldMessage> list = new ArrayList<>();
 		var obj = usuarioRepository.findByEmail(dto.getEmail());
 		if (obj != null) {
-			list.add(new FieldMessage("email", "Email " + dto.getEmail() + " já eciste"));
+			list.add(new FieldMessage("email", "Email " + dto.getEmail() + " já existe"));
 		}
 		
 		for (FieldMessage f : list) {
