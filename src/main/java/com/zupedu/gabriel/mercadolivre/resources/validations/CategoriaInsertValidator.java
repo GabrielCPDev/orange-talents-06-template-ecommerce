@@ -24,21 +24,14 @@ public class CategoriaInsertValidator implements ConstraintValidator<CategoriaIn
 	@Override
 	public boolean isValid(CategoriaDTO dto, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
-		Optional<Categoria> obj = Optional.ofNullable(new Categoria());
 		
+		var entity = categoriaRepository.findByNome(dto.getNome());
+		var catEmpity = new Categoria();
 		if(!dto.equals(null)) {
-			if (dto.getNome() != null) {
-				obj = Optional.ofNullable(categoriaRepository.findByNome(dto.getNome()));
-				if (obj.get().getNome() != null) {
+			Categoria cat = entity.orElse(catEmpity);
+			if (cat.getNome() != null) {						
 					list.add(new FieldMessage("Nome", "Nome " + dto.getNome() + " já existe"));
-				}
-			}else if (dto.getCategoriaMae() != null) {
-				obj = categoriaRepository.findById(dto.getCategoriaMae().longValue());
-				if (obj.get().getId() == null) {
-					list.add(new FieldMessage("Id ", "Categoria de id: " + dto.getCategoriaMae() + " Não existe"));
-				}
-			}			
-
+				}	
 		}		
 		
 		for (FieldMessage f : list) {

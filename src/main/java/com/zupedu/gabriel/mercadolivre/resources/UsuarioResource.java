@@ -7,6 +7,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +25,8 @@ import com.zupedu.gabriel.mercadolivre.repositories.UsuarioRepository;
 
 @RestController
 @RequestMapping("/usuarios")
-public class UsuarioResource {
-
+public class UsuarioResource implements UserDetailsService {
+	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
@@ -48,5 +51,14 @@ public class UsuarioResource {
 		obj.setEmail(dto.getEmail());
 		obj.setDataCadastro(dto.getDataCadastro());
 		return obj;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		var user = usuarioRepository.findByEmail(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("Usuario não encontrado!");
+		}
+		return user;
 	}
 }
