@@ -17,7 +17,9 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 import com.zupedu.gabriel.mercadolivre.entities.Produto;
+import com.zupedu.gabriel.mercadolivre.resources.validations.ProdutoInsert;
 
+@ProdutoInsert
 public class ProdutoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -33,31 +35,36 @@ public class ProdutoDTO implements Serializable {
 	private Double valor;
 	@Size(min = 3, message = " O produto deve conter ao menos 3 características")
 	private List<String> caracteristicas = new ArrayList<>();
+	@Size(min = 1, message = " O produto deve conter ao menos 1 imagem")
+	private List<String> imagens = new ArrayList<>();
 	@PositiveOrZero(message = "O valor não pode ser menor que 0!")
 	private Integer quantidade;
 	private Instant instanteDoCadastro;
 	@NotNull
 	private Long categoria;
+	private  Long usuario;
 
 	public ProdutoDTO() {
 
 	}
 
-	public ProdutoDTO(Long id, String nome, String descricao, Double valor, List<String> caracteristicas,
-			Integer quantidade, Instant instanteDoCadastro, Long categoria) {
+	public ProdutoDTO(Long id, String nome, String descricao, Double valor, List<String> caracteristicas, 
+			List<String> imagens, Integer quantidade, Instant instanteDoCadastro, Long categoria, Long usuario) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.valor = valor;
 		this.caracteristicas = caracteristicas;
+		this.imagens = imagens;
 		this.quantidade = quantidade;
 		this.instanteDoCadastro = instanteDoCadastro;
 		this.categoria = categoria;
+		this.usuario = usuario;
 	}
 
 	public ProdutoDTO(Long id, String nome, String descricao, Double valor, Integer quantidade,
-			Instant instanteDoCadastro, Long categoria) {
+			Instant instanteDoCadastro, Long categoria,Long usuario) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -66,6 +73,7 @@ public class ProdutoDTO implements Serializable {
 		this.quantidade = quantidade;
 		this.instanteDoCadastro = instanteDoCadastro;
 		this.categoria = categoria;
+		this.usuario = usuario;
 	}
 	public ProdutoDTO(Produto entity) {
 		id = entity.getId();
@@ -76,6 +84,7 @@ public class ProdutoDTO implements Serializable {
 		quantidade = entity.getQuantidade();
 		instanteDoCadastro = entity.getInstanteDoCadastro();
 		categoria = entity.getCategoria().getId();
+		usuario = entity.getUsuario().getId();
 	}
 
 	public Long getId() {
@@ -140,6 +149,22 @@ public class ProdutoDTO implements Serializable {
 
 	public void setCategoria(Long categoria) {
 		this.categoria = categoria;
+	}
+
+	public Long getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Long usuario) {
+		this.usuario = usuario;
+	}
+
+	public List<String> getImagens() {
+		return imagens;
+	}
+
+	public void setImagens(List<String> imagens) {
+		this.imagens = imagens;
 	}
 	
 

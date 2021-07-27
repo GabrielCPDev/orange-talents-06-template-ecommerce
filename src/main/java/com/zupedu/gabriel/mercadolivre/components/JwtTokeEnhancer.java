@@ -18,6 +18,7 @@ public class JwtTokeEnhancer implements TokenEnhancer {
 
 	@Autowired
 	private UsuarioRepository repository;
+
 	@Override
 	public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
 		Usuario user = repository.findByEmail(authentication.getName());
@@ -27,6 +28,7 @@ public class JwtTokeEnhancer implements TokenEnhancer {
 		
 		DefaultOAuth2AccessToken token = (DefaultOAuth2AccessToken) accessToken;
 		token.setAdditionalInformation(map);
+	//	token.
 		return accessToken;
 	}
 

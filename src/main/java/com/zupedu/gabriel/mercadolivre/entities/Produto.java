@@ -39,18 +39,23 @@ public class Produto implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "tb_caracteristicas")
 	private List<String> caracteristicas = new ArrayList<String>();
+	@ElementCollection
+	@CollectionTable(name = "tb_imagens")
+	private List<String> imagens = new ArrayList<String>();
 	@PositiveOrZero(message = "O valor não pode ser menor que 0!")
 	private Integer quantidade;
 	private Instant instanteDoCadastro;
 	@NotNull
 	@ManyToOne
 	private Categoria categoria;
+	@ManyToOne
+	private Usuario usuario;
 	
 	public Produto() {
 		
 	}
 	
-	public Produto(Long id, String nome, String descricao, Double valor, Integer quantidade, Instant instanteDoCadastro, Categoria categoria) {
+	public Produto(Long id, String nome, String descricao, Double valor, Integer quantidade, Instant instanteDoCadastro, Usuario usuario, Categoria categoria) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -59,15 +64,17 @@ public class Produto implements Serializable {
 		this.quantidade = quantidade;
 		this.instanteDoCadastro = instanteDoCadastro;
 		this.categoria = categoria;
+		this.usuario = usuario;
 	}
 
-	public Produto(Long id, String nome, String descricao, Double valor, List<String> caracteristicas, Integer quantidade, Instant instanteDoCadastro, Categoria categoria) {
+	public Produto(Long id, String nome, String descricao, Double valor, List<String> caracteristicas,List<String> imagens, Integer quantidade, Instant instanteDoCadastro, Categoria categoria) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.valor = valor;
 		this.caracteristicas = caracteristicas;
+		this.imagens = imagens;
 		this.quantidade = quantidade;
 		this.instanteDoCadastro = instanteDoCadastro;
 		this.categoria = categoria;
@@ -135,6 +142,22 @@ public class Produto implements Serializable {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public List<String> getImagens() {
+		return imagens;
+	}
+
+	public void setImagens(List<String> imagens) {
+		this.imagens = imagens;
 	}
 
 	@Override

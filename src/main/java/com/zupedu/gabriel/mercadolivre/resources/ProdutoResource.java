@@ -18,8 +18,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.zupedu.gabriel.mercadolivre.dtos.ProdutoDTO;
 import com.zupedu.gabriel.mercadolivre.entities.Categoria;
 import com.zupedu.gabriel.mercadolivre.entities.Produto;
+import com.zupedu.gabriel.mercadolivre.entities.Usuario;
 import com.zupedu.gabriel.mercadolivre.repositories.CategoriaRepository;
 import com.zupedu.gabriel.mercadolivre.repositories.ProdutoRepository;
+import com.zupedu.gabriel.mercadolivre.repositories.UsuarioRepository;
+import com.zupedu.gabriel.mercadolivre.resources.utils.UsuarioSS;
+import com.zupedu.gabriel.mercadolivre.resources.utils.UsuarioUtil;
 
 @RestController
 @RequestMapping("/produtos")
@@ -29,9 +33,12 @@ public class ProdutoResource {
 	private ProdutoRepository produtoRepository;
 	@Autowired
 	private CategoriaRepository categoriaRepository;
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
 	@PostMapping
-	public ResponseEntity<ProdutoDTO> save(@Valid @RequestBody ProdutoDTO dto) throws MethodArgumentNotValidException {
+	public ResponseEntity<ProdutoDTO> save(@Valid @RequestBody ProdutoDTO dto) throws MethodArgumentNotValidException {		
+		
 		Produto entity = new Produto();
 		toEntity(dto, entity);
 		entity = produtoRepository.save(entity);
@@ -42,13 +49,16 @@ public class ProdutoResource {
 
 	private void toEntity(ProdutoDTO dto, Produto entity) {
 		var catToEntity = categoriaRepository.findById(dto.getCategoria());
+		var usuarioToEntity = usuarioRepository.findById(dto.getUsuario());
 		entity.setId(dto.getId());
 		entity.setNome(dto.getNome());
 		entity.setDescricao(dto.getDescricao());
 		entity.setCategoria(catToEntity.get());
+		entity.setUsuario(usuarioToEntity.get());
 		
 		entity.getCaracteristicas().clear();
 		entity.setCaracteristicas(dto.getCaracteristicas());
+		entity.setImagens(dto.getImagens());
 		entity.setInstanteDoCadastro(Instant.now());
 		entity.setQuantidade(dto.getQuantidade());
 		entity.setValor(dto.getValor());

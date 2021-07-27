@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -35,6 +38,8 @@ public class Usuario implements UserDetails, Serializable{
 	@NotBlank(message = "Campo Obrigatório")
 	private String senha;
 	private Instant dataCadastro;
+	@OneToMany(mappedBy = "usuario")
+	private Set<Produto> produtos;
 	
 	public Usuario() {
 		
@@ -87,6 +92,14 @@ public class Usuario implements UserDetails, Serializable{
 
 	public void setDataCadastro(Instant dataCadastro) {
 		this.dataCadastro = dataCadastro;
+	}
+
+	public Set<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(Set<Produto> produtos) {
+		this.produtos = produtos;
 	}
 
 	@Override
