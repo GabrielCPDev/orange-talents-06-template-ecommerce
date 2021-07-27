@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,7 +36,7 @@ public class UsuarioResource implements UserDetailsService {
 	
 	@PostMapping
 	public ResponseEntity<UsuarioDTO> save (@Valid @RequestBody UsuarioNewDTO dto) throws MethodArgumentNotValidException{
-		Usuario entity = toEntity(dto);
+		Usuario entity = toEntity(dto); 
 		entity.setSenha(senhaEncoder.encode(dto.getSenha()));
 		entity.setDataCadastro(Instant.now());
 		entity = usuarioRepository.save(entity);
