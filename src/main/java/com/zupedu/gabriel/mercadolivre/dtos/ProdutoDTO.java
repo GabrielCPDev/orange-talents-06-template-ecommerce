@@ -42,14 +42,15 @@ public class ProdutoDTO implements Serializable {
 	private Instant instanteDoCadastro;
 	@NotNull
 	private Long categoria;
-	private  Long usuario;
+	private Long usuario;
+	private Long avaliacao;
 
 	public ProdutoDTO() {
 
 	}
 
-	public ProdutoDTO(Long id, String nome, String descricao, Double valor, List<String> caracteristicas, 
-			List<String> imagens, Integer quantidade, Instant instanteDoCadastro, Long categoria, Long usuario) {
+	public ProdutoDTO(Long id, String nome, String descricao, Double valor, List<String> caracteristicas,
+			List<String> imagens, Integer quantidade, Instant instanteDoCadastro, Long categoria, Long usuario, Long avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -61,10 +62,11 @@ public class ProdutoDTO implements Serializable {
 		this.instanteDoCadastro = instanteDoCadastro;
 		this.categoria = categoria;
 		this.usuario = usuario;
+		this.avaliacao = avaliacao;
 	}
 
 	public ProdutoDTO(Long id, String nome, String descricao, Double valor, Integer quantidade,
-			Instant instanteDoCadastro, Long categoria,Long usuario) {
+			Instant instanteDoCadastro, Long categoria, Long usuario, Long avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -74,10 +76,12 @@ public class ProdutoDTO implements Serializable {
 		this.instanteDoCadastro = instanteDoCadastro;
 		this.categoria = categoria;
 		this.usuario = usuario;
+		this.avaliacao = avaliacao;
 	}
+
 	public ProdutoDTO(Produto entity) {
 		id = entity.getId();
-	    nome = entity.getNome();
+		nome = entity.getNome();
 		descricao = entity.getDescricao();
 		valor = entity.getValor();
 		caracteristicas = entity.getCaracteristicas();
@@ -85,6 +89,7 @@ public class ProdutoDTO implements Serializable {
 		instanteDoCadastro = entity.getInstanteDoCadastro();
 		categoria = entity.getCategoria().getId();
 		usuario = entity.getUsuario().getId();
+		avaliacao = entity.getAvaliacao().getId();
 	}
 
 	public Long getId() {
@@ -166,6 +171,13 @@ public class ProdutoDTO implements Serializable {
 	public void setImagens(List<String> imagens) {
 		this.imagens = imagens;
 	}
-	
+
+	public Long getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Long avaliacao) {
+		this.avaliacao = avaliacao;
+	}
 
 }

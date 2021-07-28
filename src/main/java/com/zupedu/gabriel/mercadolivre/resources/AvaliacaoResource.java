@@ -1,7 +1,6 @@
 package com.zupedu.gabriel.mercadolivre.resources;
 
 import java.net.URI;
-import java.time.Instant;
 
 import javax.validation.Valid;
 
@@ -15,54 +14,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.zupedu.gabriel.mercadolivre.dtos.AvaliacaoDTO;
 import com.zupedu.gabriel.mercadolivre.dtos.ProdutoDTO;
-import com.zupedu.gabriel.mercadolivre.entities.Produto;
+import com.zupedu.gabriel.mercadolivre.entities.Avaliacao;
 import com.zupedu.gabriel.mercadolivre.repositories.AvaliacaoRepository;
-import com.zupedu.gabriel.mercadolivre.repositories.CategoriaRepository;
 import com.zupedu.gabriel.mercadolivre.repositories.ProdutoRepository;
 import com.zupedu.gabriel.mercadolivre.repositories.UsuarioRepository;
 
 @RestController
-@RequestMapping("/produtos")
-public class ProdutoResource {
+@RequestMapping("/avaliacoes")
+public class AvaliacaoResource {
 
 	@Autowired
-	private ProdutoRepository produtoRepository;
-	@Autowired
-	private CategoriaRepository categoriaRepository;
+	private ProdutoRepository produtoRepository;	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	@Autowired
 	private AvaliacaoRepository avaliacaoRepository;
 
 	@PostMapping
-	public ResponseEntity<ProdutoDTO> save(@Valid @RequestBody ProdutoDTO dto) throws MethodArgumentNotValidException {		
+	public ResponseEntity<AvaliacaoDTO> save(@Valid @RequestBody AvaliacaoDTO dto) throws MethodArgumentNotValidException {		
 		
-		Produto entity = new Produto();
+		Avaliacao entity = new Avaliacao();
 		toEntity(dto, entity);
-		entity = produtoRepository.save(entity);
+		entity = avaliacaoRepository.save(entity);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
 		return ResponseEntity.status(HttpStatus.OK).location(uri).build();
 
 	}
 
-	private void toEntity(ProdutoDTO dto, Produto entity) {
-		var catToEntity = categoriaRepository.findById(dto.getCategoria());
-		var usuarioToEntity = usuarioRepository.findById(dto.getUsuario());
-		var avaliacaoToEntity = avaliacaoRepository.findById(dto.getAvaliacao());
+	private void toEntity(AvaliacaoDTO dto, Avaliacao entity) {
+		var usuarioToEntity = usuarioRepository.findById(dto.getUsuario().getId());
+		var produtoToEntity = produtoRepository.findById(dto.getProduto().getId());
 		
 		entity.setId(dto.getId());
-		entity.setNome(dto.getNome());
+		entity.setTitulo(dto.getTitulo());
 		entity.setDescricao(dto.getDescricao());
-		entity.setCategoria(catToEntity.get());
+		entity.setNota(dto.getNota());
 		entity.setUsuario(usuarioToEntity.get());
-		entity.setAvaliacao(avaliacaoToEntity.get());
+		entity.setProduto(produtoToEntity.get());
 		
-		entity.getCaracteristicas().clear();
-		entity.setCaracteristicas(dto.getCaracteristicas());
-		entity.setImagens(dto.getImagens());
-		entity.setInstanteDoCadastro(Instant.now());
-		entity.setQuantidade(dto.getQuantidade());
-		entity.setValor(dto.getValor());
 	}
 }

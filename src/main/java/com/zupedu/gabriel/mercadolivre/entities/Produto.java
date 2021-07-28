@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -50,12 +51,14 @@ public class Produto implements Serializable {
 	private Categoria categoria;
 	@ManyToOne
 	private Usuario usuario;
+	@OneToOne
+	private Avaliacao avaliacao;
 	
 	public Produto() {
 		
 	}
 	
-	public Produto(Long id, String nome, String descricao, Double valor, Integer quantidade, Instant instanteDoCadastro, Usuario usuario, Categoria categoria) {
+	public Produto(Long id, String nome, String descricao, Double valor, Integer quantidade, Instant instanteDoCadastro, Usuario usuario, Categoria categoria, Avaliacao avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -65,9 +68,10 @@ public class Produto implements Serializable {
 		this.instanteDoCadastro = instanteDoCadastro;
 		this.categoria = categoria;
 		this.usuario = usuario;
+		this.avaliacao = avaliacao;
 	}
 
-	public Produto(Long id, String nome, String descricao, Double valor, List<String> caracteristicas,List<String> imagens, Integer quantidade, Instant instanteDoCadastro, Categoria categoria) {
+	public Produto(Long id, String nome, String descricao, Double valor, List<String> caracteristicas,List<String> imagens, Integer quantidade, Instant instanteDoCadastro, Categoria categoria, Avaliacao avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -78,6 +82,7 @@ public class Produto implements Serializable {
 		this.quantidade = quantidade;
 		this.instanteDoCadastro = instanteDoCadastro;
 		this.categoria = categoria;
+		this.avaliacao = avaliacao;
 	}
 
 	public Long getId() {
@@ -158,6 +163,14 @@ public class Produto implements Serializable {
 
 	public void setImagens(List<String> imagens) {
 		this.imagens = imagens;
+	}
+
+	public Avaliacao getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Avaliacao avaliacao) {
+		this.avaliacao = avaliacao;
 	}
 
 	@Override

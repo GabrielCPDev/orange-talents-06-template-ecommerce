@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,6 +41,8 @@ public class Usuario implements UserDetails, Serializable{
 	private Instant dataCadastro;
 	@OneToMany(mappedBy = "usuario")
 	private Set<Produto> produtos;
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+	private Set<Avaliacao> avaliacoes; 
 	
 	public Usuario() {
 		
@@ -100,6 +103,14 @@ public class Usuario implements UserDetails, Serializable{
 
 	public void setProdutos(Set<Produto> produtos) {
 		this.produtos = produtos;
+	}
+
+	public Set<Avaliacao> getAvaliacoes() {
+		return avaliacoes;
+	}
+
+	public void setAvaliacoes(Set<Avaliacao> avaliacoes) {
+		this.avaliacoes = avaliacoes;
 	}
 
 	@Override
