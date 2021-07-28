@@ -2,6 +2,7 @@ package com.zupedu.gabriel.mercadolivre.dtos;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -31,7 +32,7 @@ public class PerguntaDTO implements Serializable {
 		this.criacao = criacao;
 		this.usuario = usuario;
 		this.produto = produto;
-	}
+	}	
 	
 	public PerguntaDTO (Pergunta entity) {
 		id = entity.getId();
@@ -81,5 +82,4 @@ public class PerguntaDTO implements Serializable {
 		this.produto = produto;
 	}
 	
-
 }

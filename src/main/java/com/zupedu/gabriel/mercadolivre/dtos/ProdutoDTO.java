@@ -44,6 +44,7 @@ public class ProdutoDTO implements Serializable {
 	private Long categoria;
 	private Long usuario;
 	private Long avaliacao;
+	private List<PerguntaDTO> perguntas;
 
 	public ProdutoDTO() {
 
@@ -178,6 +179,14 @@ public class ProdutoDTO implements Serializable {
 
 	public void setAvaliacao(Long avaliacao) {
 		this.avaliacao = avaliacao;
+	}
+
+	public List<PerguntaDTO> getPerguntas() {
+		return perguntas;
+	}
+
+	public void setPerguntas(List<PerguntaDTO> perguntas) {
+		this.perguntas = perguntas;
 	}
 
 }

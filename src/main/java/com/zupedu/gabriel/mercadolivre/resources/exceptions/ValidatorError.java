@@ -1,5 +1,6 @@
 package com.zupedu.gabriel.mercadolivre.resources.exceptions;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ public class ValidatorError extends StandardError{
 
 	private List<FieldMessage> errors = new ArrayList<>();
 
-	public ValidatorError(Long timeStamp, Integer status, String message) {
+	public ValidatorError(Instant timeStamp, Integer status, String message) {
 		super(timeStamp, status, message);
 		// TODO Auto-generated constructor stub
 	}

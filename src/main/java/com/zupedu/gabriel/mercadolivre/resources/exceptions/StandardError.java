@@ -1,25 +1,30 @@
 package com.zupedu.gabriel.mercadolivre.resources.exceptions;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 public class StandardError implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long timeStamp;
+	private Instant timeStamp;
 	private Integer status;
 	private String message;
 	
-	public StandardError(Long timeStamp, Integer status, String message) {
+	public StandardError() {
+		
+	}
+	
+	public StandardError(Instant timeStamp, Integer status, String message) {
 		super();
 		this.timeStamp = timeStamp;
 		this.status = status;
 		this.message = message;
 	}
 	
-	public Long getTimeStamp() {
+	public Instant getTimeStamp() {
 		return timeStamp;
 	}
-	public void setTimeStamp(Long timeStamp) {
+	public void setTimeStamp(Instant timeStamp) {
 		this.timeStamp = timeStamp;
 	}
 	public Integer getStatus() {
