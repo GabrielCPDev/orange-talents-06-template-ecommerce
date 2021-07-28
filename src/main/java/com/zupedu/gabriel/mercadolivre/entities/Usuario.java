@@ -43,6 +43,8 @@ public class Usuario implements UserDetails, Serializable{
 	private Set<Produto> produtos;
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
 	private Set<Avaliacao> avaliacoes; 
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+	private Set<Pergunta> perguntas; 
 	
 	public Usuario() {
 		
@@ -111,6 +113,14 @@ public class Usuario implements UserDetails, Serializable{
 
 	public void setAvaliacoes(Set<Avaliacao> avaliacoes) {
 		this.avaliacoes = avaliacoes;
+	}
+
+	public Set<Pergunta> getPerguntas() {
+		return perguntas;
+	}
+
+	public void setPerguntas(Set<Pergunta> perguntas) {
+		this.perguntas = perguntas;
 	}
 
 	@Override
