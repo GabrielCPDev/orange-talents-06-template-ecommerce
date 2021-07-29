@@ -34,5 +34,15 @@ public class ResourceExceptionHandler {
 		err.setMessage(e.getMessage());
 		return ResponseEntity.status(status).body(err);
 	}
+	
+	@ExceptionHandler(InvalidArgumentRequestException.class)
+	public ResponseEntity<StandardError> invalidArgument(InvalidArgumentRequestException e, HttpServletRequest request) {
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		StandardError err = new StandardError();
+		err.setTimeStamp(Instant.now());
+		err.setStatus(status.value());
+		err.setMessage(e.getMessage());
+		return ResponseEntity.status(status).body(err);
+	}
 
 }

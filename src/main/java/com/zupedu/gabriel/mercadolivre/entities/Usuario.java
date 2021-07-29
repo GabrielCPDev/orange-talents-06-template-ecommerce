@@ -45,6 +45,8 @@ public class Usuario implements UserDetails, Serializable{
 	private Set<Avaliacao> avaliacoes; 
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
 	private Set<Pergunta> perguntas; 
+	@OneToMany(mappedBy = "comprador", fetch = FetchType.LAZY)
+	private Set<NovaCompra> compras; 
 	
 	public Usuario() {
 		

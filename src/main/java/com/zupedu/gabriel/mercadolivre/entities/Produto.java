@@ -33,7 +33,7 @@ public class Produto implements Serializable {
 	@NotBlank
 	@Column(unique = true)
 	private String nome;
-	@Size(max =1000, message = "O número máximo de caracteres é 1000!")
+	@Size(max = 1000, message = "O número máximo de caracteres é 1000!")
 	private String descricao;
 	@Positive(message = "O valor não pode ser menor ou igual a zero!")
 	private Double valor;
@@ -55,13 +55,16 @@ public class Produto implements Serializable {
 	@OneToOne
 	private Avaliacao avaliacao;
 	@OneToMany(mappedBy = "produto")
-	private List<Pergunta> perguntas; 
-	
+	private List<NovaCompra> compras;
+	@OneToMany(mappedBy = "produto")
+	private List<Pergunta> perguntas;
+
 	public Produto() {
-		
+
 	}
-	
-	public Produto(Long id, String nome, String descricao, Double valor, Integer quantidade, Instant instanteDoCadastro, Usuario usuario, Categoria categoria, Avaliacao avaliacao) {
+
+	public Produto(Long id, String nome, String descricao, Double valor, Integer quantidade, Instant instanteDoCadastro,
+			Usuario usuario, Categoria categoria, Avaliacao avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -74,7 +77,9 @@ public class Produto implements Serializable {
 		this.avaliacao = avaliacao;
 	}
 
-	public Produto(Long id, String nome, String descricao, Double valor, List<String> caracteristicas,List<String> imagens, Integer quantidade, Instant instanteDoCadastro, Categoria categoria, Avaliacao avaliacao) {
+	public Produto(Long id, String nome, String descricao, Double valor, List<String> caracteristicas,
+			List<String> imagens, List<NovaCompra> compras, Integer quantidade, Instant instanteDoCadastro,
+			Categoria categoria, Avaliacao avaliacao) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -83,6 +88,7 @@ public class Produto implements Serializable {
 		this.caracteristicas = caracteristicas;
 		this.imagens = imagens;
 		this.quantidade = quantidade;
+		this.compras = compras;
 		this.instanteDoCadastro = instanteDoCadastro;
 		this.categoria = categoria;
 		this.avaliacao = avaliacao;
@@ -126,6 +132,22 @@ public class Produto implements Serializable {
 
 	public void setCaracteristicas(List<String> caracteristicas) {
 		this.caracteristicas = caracteristicas;
+	}
+
+	public List<NovaCompra> getCompras() {
+		return compras;
+	}
+
+	public void setCompras(List<NovaCompra> compras) {
+		this.compras = compras;
+	}
+
+	public List<Pergunta> getPerguntas() {
+		return perguntas;
+	}
+
+	public void setPerguntas(List<Pergunta> perguntas) {
+		this.perguntas = perguntas;
 	}
 
 	public Integer getQuantidade() {
@@ -200,7 +222,5 @@ public class Produto implements Serializable {
 			return false;
 		return true;
 	}
-	
 
-	
 }
