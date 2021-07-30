@@ -1,23 +1,31 @@
 package com.zupedu.gabriel.mercadolivre.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import org.springframework.util.Assert;
+
+import com.zupedu.gabriel.mercadolivre.dtos.RetornoPagseguroDTO;
 import com.zupedu.gabriel.mercadolivre.entities.enums.GatewayPagamento;
 
 @Entity
 @Table(name = "tb_nova_compra")
-public class NovaCompra implements Serializable{
-	
+public class NovaCompra implements Serializable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,13 +39,15 @@ public class NovaCompra implements Serializable{
 	@Enumerated
 	@NotNull(message = "Campo obrigatorio!")
 	private GatewayPagamento gatewayPagamento;
-	
-	
+	@OneToMany(mappedBy = "compra", cascade = CascadeType.MERGE)
+	private Set<Transacao> transacoes = new HashSet<>();
+
 	public NovaCompra() {
-		
+
 	}
 
-	public NovaCompra(Long id, Integer quantidade, Produto produto,Usuario comprador, GatewayPagamento gatewayPagamento) {
+	public NovaCompra(Long id, Integer quantidade, Produto produto, Usuario comprador,
+			GatewayPagamento gatewayPagamento) {
 		super();
 		this.id = id;
 		this.quantidade = quantidade;
@@ -110,6 +120,23 @@ public class NovaCompra implements Serializable{
 			return false;
 		return true;
 	}
-	
+
+	public void adicionaTransacao(RetornoPagseguroDTO dto) {
+		Transacao novaTransacao = dto.toTransacao(this);
+		org.springframework.util.Assert.isTrue(!this.transacoes.contains(novaTransacao),
+				"Uma transação igual a essa já está sendo processada: " + novaTransacao);
+		Set<Transacao> transacoesConcluidasComSucesso = this.transacoes.stream().filter(Transacao::concluidaComSucesso)
+				.collect(Collectors.toSet());
+		Assert.isTrue(transacoesConcluidasComSucesso.isEmpty(), "Essa compra já foi concluida com sucesso!");
+
+		this.transacoes.add(novaTransacao);
+
+	}
+
+	@Override
+	public String toString() {
+		return "NovaCompra [id=" + id + ", quantidade=" + quantidade + ", produto=" + produto + ", comprador="
+				+ comprador + ", gatewayPagamento=" + gatewayPagamento + ", transacoes=" + transacoes + "]";
+	}
 
 }
