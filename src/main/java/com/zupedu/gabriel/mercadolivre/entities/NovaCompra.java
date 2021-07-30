@@ -96,6 +96,14 @@ public class NovaCompra implements Serializable {
 		this.gatewayPagamento = gatewayPagamento;
 	}
 
+	public Set<Transacao> getTransacoes() {
+		return transacoes;
+	}
+
+	public void setTransacoes(Set<Transacao> transacoes) {
+		this.transacoes = transacoes;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -123,20 +131,29 @@ public class NovaCompra implements Serializable {
 
 	public void adicionaTransacao(RetornoPagseguroDTO dto) {
 		Transacao novaTransacao = dto.toTransacao(this);
-		org.springframework.util.Assert.isTrue(!this.transacoes.contains(novaTransacao),
+		Assert.isTrue(!this.transacoes.contains(novaTransacao),
 				"Uma transação igual a essa já está sendo processada: " + novaTransacao);
-		Set<Transacao> transacoesConcluidasComSucesso = this.transacoes.stream().filter(Transacao::concluidaComSucesso)
-				.collect(Collectors.toSet());
-		Assert.isTrue(transacoesConcluidasComSucesso.isEmpty(), "Essa compra já foi concluida com sucesso!");
 
+		Assert.isTrue(transacoesConcluidasComSucesso().isEmpty(), "Essa compra já foi concluida com sucesso!");
+		Assert.isTrue(transacoesConcluidasComSucesso().size() <= 1, "Existe mais de uma transação dentro da compra");
 		this.transacoes.add(novaTransacao);
 
+	}
+
+	private Set<Transacao> transacoesConcluidasComSucesso() {
+		Set<Transacao> transacoesConcluidasComSucesso = this.transacoes.stream().filter(Transacao::concluidaComSucesso)
+				.collect(Collectors.toSet());
+		return transacoesConcluidasComSucesso;
 	}
 
 	@Override
 	public String toString() {
 		return "NovaCompra [id=" + id + ", quantidade=" + quantidade + ", produto=" + produto + ", comprador="
 				+ comprador + ", gatewayPagamento=" + gatewayPagamento + ", transacoes=" + transacoes + "]";
+	}
+
+	public boolean processadaComSucesso() {
+		return !transacoesConcluidasComSucesso().isEmpty();
 	}
 
 }
